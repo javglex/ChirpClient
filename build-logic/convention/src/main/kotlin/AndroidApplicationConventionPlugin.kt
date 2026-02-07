@@ -19,10 +19,10 @@ class AndroidApplicationConventionPlugin: Plugin<Project> {
                 namespace = "com.skymonkey.chirpclient"
 
                 defaultConfig {
-                    applicationId = "com.skymonkey.chirpclient"
-                    targetSdk = libs.findVersionInt("projectTargetSdkVersion")
-                    versionCode = 1
-                    versionName = "1.0"
+                    applicationId = libs.findVersion("projectApplicationId").get().toString()
+                    targetSdk = libs.findVersion("projectTargetSdkVersion").get().toString().toInt()
+                    versionCode = libs.findVersion("projectVersionCode").get().toString().toInt()
+                    versionName = libs.findVersion("projectVersionName").get().toString()
                 }
                 packaging {
                     resources {
