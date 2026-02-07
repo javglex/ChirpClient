@@ -156,6 +156,9 @@ androidx-runner = { group = "androidx.test", name = "runner", version.ref = "run
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junit" }
 
 [plugins]
+convention-android-application = { id = "com.skymonkey.convention.android.application", version = "unspecified" }
+convention-cmp-application = { id = "com.skymonkey.convention.cmp.application", version = "unspecified" }
+convention-android-application-compose = { id = "com.skymonkey.convention.android.application.compose", version = "unspecified" }
 
 # Android
 android-application = { id = "com.android.application", version.ref = "agp" }
