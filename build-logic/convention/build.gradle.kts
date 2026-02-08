@@ -12,6 +12,9 @@ dependencies {
     compileOnly(libs.kotlin.gradlePlugin)
     compileOnly(libs.compose.gradlePlugin)
     compileOnly(libs.ksp.gradlePlugin)
+    compileOnly(libs.androidx.room.gradle.plugin)
+    implementation(libs.buildkonfig.gradlePlugin)
+    implementation(libs.buildkonfig.compiler)
 }
 
 java {
@@ -49,6 +52,22 @@ gradlePlugin {
         register("kmpLibrary") {
             id = "com.skymonkey.convention.kmp.library"
             implementationClass = "KmpLibraryConventionPlugin"
+        }
+        register("cmpLibrary") {
+            id = "com.skymonkey.convention.cmp.library"
+            implementationClass = "CmpLibraryConventionPlugin"
+        }
+        register("cmpFeature") {
+            id = "com.skymonkey.convention.cmp.feature"
+            implementationClass = "CmpFeatureConventionPlugin"
+        }
+        register("buildKonfig") {
+            id = "com.skymonkey.convention.buildkonfig"
+            implementationClass = "BuildKonfigConventionPlugin"
+        }
+        register("room") {
+            id = "com.skymonkey.convention.room"
+            implementationClass = "RoomConventionPlugin"
         }
     }
 }
