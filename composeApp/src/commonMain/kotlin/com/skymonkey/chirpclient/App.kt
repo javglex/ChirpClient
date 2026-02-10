@@ -17,12 +17,13 @@ import org.jetbrains.compose.resources.painterResource
 
 import chirpclient.composeapp.generated.resources.Res
 import chirpclient.composeapp.generated.resources.compose_multiplatform
+import com.skymonkey.core.designsystem.theme.ChirpTheme
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 @Preview
 fun App() {
-    MaterialTheme {
+    ChirpTheme {
         var showContent by remember { mutableStateOf(false) }
         Column(
             modifier = Modifier

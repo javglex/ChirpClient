@@ -16,24 +16,27 @@ kotlin {
                 // Add KMP dependencies here
 
                 implementation(projects.core.domain)
+
+                /*
+                 * Kotlin multiplatform networking.
+                 * We still define the platform specific networking libs
+                 * under androidMain and iosMain.
+                 */
+                implementation(libs.bundles.ktor.common)
             }
         }
 
         androidMain {
             dependencies {
-                // Add Android-specific dependencies here. Note that this source set depends on
-                // commonMain by default and will correctly pull the Android artifacts of any KMP
-                // dependencies declared in commonMain.
+                // android specific networking
+                implementation(libs.ktor.client.okhttp)
             }
         }
 
         iosMain {
             dependencies {
-                // Add iOS-specific dependencies here. This a source set created by Kotlin Gradle
-                // Plugin (KGP) that each specific iOS target (e.g., iosX64) depends on as
-                // part of KMP’s default source set hierarchy. Note that this source set depends
-                // on common by default and will correctly pull the iOS artifacts of any
-                // KMP dependencies declared in commonMain.
+                // iOS specific networking
+                implementation(libs.ktor.client.darwin)
             }
         }
     }
