@@ -1,4 +1,4 @@
-package com.skymonkey.core.presentation
+package com.skymonkey.core.presentation.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
