@@ -23,6 +23,11 @@ kotlin {
                  * under androidMain and iosMain.
                  */
                 implementation(libs.bundles.ktor.common)
+
+                /*
+                 * For logging
+                 */
+                implementation(libs.touchlab.kermit)
             }
         }
 
