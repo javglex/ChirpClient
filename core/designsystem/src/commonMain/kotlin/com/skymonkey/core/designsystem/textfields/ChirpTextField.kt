@@ -1,4 +1,4 @@
-package com.skymonkey.core.designsystem.buttons
+package com.skymonkey.core.designsystem.textfields
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -45,28 +45,15 @@ fun ChirpTextField(
     keyboardType: KeyboardType = KeyboardType.Text,
     onFocusChanged: (Boolean) -> Unit = {},
 ) {
-    val interactionSource = remember {
-        MutableInteractionSource()
-    }
 
-    val isFocused by interactionSource.collectIsFocusedAsState()
-
-    LaunchedEffect(key1 = isFocused) {
-        onFocusChanged(isFocused)
-    }
-
-    Column(
+    ChirpTextFieldLayout(
+        title = title,
+        isError = isError,
+        supportingText = supportingText,
+        enabled = enabled,
+        onFocusChanged = onFocusChanged,
         modifier = modifier
-    ) {
-        if(title != null) {
-            Text(
-                text = title,
-                style = MaterialTheme.typography.labelSmall,
-                color = MaterialTheme.colorScheme.extended.textSecondary
-            )
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-
+    ) { styleModifier, interactionSource ->
         BasicTextField(
             state = state,
             lineLimits = if(singleLine) {
@@ -82,28 +69,7 @@ fun ChirpTextField(
             ),
             cursorBrush = SolidColor(MaterialTheme.colorScheme.onSurface),
             interactionSource = interactionSource,
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    color = when {
-                        isFocused -> MaterialTheme.colorScheme.primary.copy(
-                            alpha = 0.5f
-                        )
-                        enabled -> MaterialTheme.colorScheme.surface
-                        else -> MaterialTheme.colorScheme.extended.secondaryFill
-                    },
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .border(
-                    width = 1.dp,
-                    color = when {
-                        isError -> MaterialTheme.colorScheme.error
-                        isFocused -> MaterialTheme.colorScheme.primary
-                        else -> MaterialTheme.colorScheme.outline
-                    },
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(12.dp),
+            modifier = styleModifier,
             decorator = { innerBox -> // innerbox holds the real textfield content
                 // good for adding placeholders or hint texts
                 Box(
@@ -122,21 +88,7 @@ fun ChirpTextField(
                 }
             }
         )
-        Spacer(modifier = Modifier.height(4.dp))
-
-        if(supportingText != null) {
-            Text(
-                text = supportingText,
-                color = if (isError) {
-                    MaterialTheme.colorScheme.error
-                } else {
-                    MaterialTheme.colorScheme.extended.textTertiary
-                },
-                style = MaterialTheme.typography.labelSmall
-            )
-        }
     }
-
 }
 
 @Composable
