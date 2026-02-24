@@ -1,4 +1,4 @@
-package com.skymonkey.core.designsystem.buttons
+package com.skymonkey.core.designsystem.components.buttons
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
