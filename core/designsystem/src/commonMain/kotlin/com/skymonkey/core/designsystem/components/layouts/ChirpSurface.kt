@@ -30,8 +30,7 @@ fun ChirpSurface(
 ) {
     Surface(
         color = MaterialTheme.colorScheme.background,
-        modifier = modifier,
-
+        modifier = modifier
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
