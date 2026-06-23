@@ -35,16 +35,23 @@ import com.skymonkey.core.designsystem.components.layouts.ChirpSnackbarScaffold
 import com.skymonkey.core.designsystem.components.textfields.ChirpPasswordTextField
 import com.skymonkey.core.designsystem.components.textfields.ChirpTextField
 import com.skymonkey.core.designsystem.theme.ChirpTheme
-import org.jetbrains.compose.resources.StringResource
+import com.skymonkey.core.presentation.util.ObserveAsEvents
 import org.jetbrains.compose.resources.stringResource
 import org.jetbrains.compose.ui.tooling.preview.Preview
 
 @Composable
 fun RegisterScreenRoot(
-    viewModel: RegisterScreenViewModel = viewModel()
+    viewModel: RegisterScreenViewModel = viewModel(),
+    onRegisterSuccess: (String) -> Unit,
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
     val snackbarHostState = remember { SnackbarHostState() }
+
+    ObserveAsEvents(viewModel.events) { event ->
+        when(event) {
+            is RegisterEvent.Success -> onRegisterSuccess(event.email)
+        }
+    }
 
     RegisterScreenScreen(
         state = state,
@@ -64,7 +71,9 @@ fun RegisterScreenScreen(
     ) {
         ChirpAdaptiveFormLayout(
             headerText = stringResource(Res.string.welcome_to_chirp),
-            errorText = null, // TODO error text
+            errorText = state.registrationError?.let { res ->
+                stringResource(res)
+            },
             logo = {
                 ChirpBrandLogo()
             }

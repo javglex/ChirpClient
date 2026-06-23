@@ -1,6 +1,7 @@
 package com.skymonkey.auth.presentation.register
 
 import androidx.compose.foundation.text.input.TextFieldState
+import org.jetbrains.compose.resources.StringResource
 
 data class RegisterScreenState(
     // email fields
@@ -17,7 +18,7 @@ data class RegisterScreenState(
     val isUsernameValid: Boolean = false,
     val usernameError: RegistrationErrorType? = null,
     // registration button
-    val registrationError: RegistrationErrorType? = null,
+    val registrationError: StringResource? = null,
     val isRegistering: Boolean = false,
     val canRegister: Boolean = false
 )

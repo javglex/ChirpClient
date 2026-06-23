@@ -3,14 +3,26 @@ package com.skymonkey.auth.presentation.register
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.skymonkey.auth.domain.EmailValidator
+import com.skymonkey.core.domain.auth.AuthService
+import com.skymonkey.core.domain.util.onFailure
+import com.skymonkey.core.domain.util.onSuccess
 import com.skymonkey.core.domain.validation.PasswordValidator
+import com.skymonkey.core.presentation.util.toStringResource
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.onStart
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 
-class RegisterScreenViewModel : ViewModel() {
+class RegisterScreenViewModel(
+    private val authService: AuthService
+) : ViewModel() {
+
+    private val eventChannel = Channel<RegisterEvent>()
+    val events = eventChannel.receiveAsFlow()
 
     private var hasLoadedInitialData = false
 
@@ -31,6 +43,10 @@ class RegisterScreenViewModel : ViewModel() {
     fun onAction(action: RegisterScreenAction) {
         when (action) {
             RegisterScreenAction.OnLoginClick -> validateFormInputs()
+            RegisterScreenAction.OnRegisterClick -> register()
+            RegisterScreenAction.OnTogglePasswordVisibilityClick -> {
+                _state.update { it.copy(isPasswordVisible = !it.isPasswordVisible) }
+            }
             else -> {}
         }
     }
@@ -42,6 +58,34 @@ class RegisterScreenViewModel : ViewModel() {
             passwordError = null,
             registrationError = null
         ) }
+    }
+
+    private fun register() {
+        if (!validateFormInputs()) return
+        viewModelScope.launch {
+
+            _state.update { it.copy(isRegistering = true) }
+
+            val email = state.value.emailTextState.text.toString()
+            val username = state.value.usernameTextState.text.toString()
+            val password = state.value.passwordTextState.text.toString()
+
+            authService
+                .register(
+                email = email,
+                username = username,
+                password = password
+                )
+                .onSuccess {
+                    _state.update { it.copy(isRegistering = false) }
+                }
+                .onFailure { error ->
+                    _state.update { it.copy(
+                        isRegistering = false,
+                        registrationError = error.toStringResource()
+                    ) }
+                }
+        }
     }
 
     private fun validateFormInputs(): Boolean {
